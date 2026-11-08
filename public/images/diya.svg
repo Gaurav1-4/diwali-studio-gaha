@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="diyaFlameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#FF3D00" />
+      <stop offset="35%" stop-color="#FFD600" />
+      <stop offset="100%" stop-color="#FFFFFF" />
+    </linearGradient>
+    <linearGradient id="diyaClay" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF6D00" />
+      <stop offset="50%" stop-color="#D84315" />
+      <stop offset="100%" stop-color="#4E1402" />
+    </linearGradient>
+    <linearGradient id="diyaGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF9C4" />
+      <stop offset="50%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#FF8F00" />
+    </linearGradient>
+  </defs>
+  <!-- Flame Structure -->
+  <g class="diya-flame-group">
+    <circle cx="250" cy="180" r="55" fill="#FFB300" opacity="0.35"/>
+    <path d="M250 85 C230 140 195 175 195 215 C195 245 220 265 250 265 C280 265 305 245 305 215 C305 175 270 140 250 85 Z" fill="url(#diyaFlameGrad)"/>
+    <path d="M250 135 C240 165 220 185 220 215 C220 230 232 245 250 245 C268 245 280 230 280 215 C280 185 260 165 250 135 Z" fill="#FFFFFF" opacity="0.95"/>
+  </g>
+  <rect x="246" y="258" width="8" height="18" fill="#212121" rx="2"/>
+  <!-- Diya Bowl -->
+  <path d="M 155 330 C 155 385, 345 385, 345 330 C 345 315, 320 310, 250 310 C 180 310, 155 315, 155 330 Z" fill="url(#diyaClay)" stroke="#BF360C" stroke-width="2"/>
+  <ellipse cx="250" cy="310" rx="120" ry="18" fill="#FF8A65" stroke="#E65100" stroke-width="2"/>
+  <!-- Gold filigree -->
+  <path d="M 180 338 Q 250 370 320 338" stroke="url(#diyaGold)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="250" cy="360" r="4" fill="#FFD700"/>
+</svg>

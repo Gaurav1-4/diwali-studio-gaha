@@ -1,0 +1,162 @@
+.grand-finale-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  transition: all 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grand-finale-center.hidden {
+  opacity: 0;
+  transform: translate(-50%, -46%) scale(0.82);
+  pointer-events: none;
+}
+
+.finale-sparkle-aura {
+  position: absolute;
+  width: 620px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(255, 179, 0, 0.35) 0%, rgba(211, 47, 47, 0.22) 50%, transparent 75%);
+  filter: blur(36px);
+  pointer-events: none;
+  animation: pulse-aura 2.4s infinite alternate ease-in-out;
+}
+
+.finale-mandala-ring {
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255, 215, 0, 0.32);
+  box-shadow: 0 0 40px rgba(255, 179, 0, 0.25), inset 0 0 35px rgba(211, 47, 47, 0.2);
+  pointer-events: none;
+  animation: spin-mandala 40s linear infinite;
+}
+
+@keyframes spin-mandala {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-aura {
+  0% { transform: scale(0.92); opacity: 0.65; }
+  100% { transform: scale(1.18); opacity: 1; }
+}
+
+/* Marigold Garland Arch */
+.marigold-garland {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-bottom: 0.5rem;
+  z-index: 2;
+}
+
+.garland-flower {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 4px 12px rgba(255, 111, 0, 0.65));
+  animation: sway-flower 3s infinite alternate ease-in-out;
+}
+
+.garland-flower.f1 { transform: translateY(12px) rotate(-10deg); animation-delay: 0s; }
+.garland-flower.f2 { transform: translateY(3px) rotate(-4deg); animation-delay: 0.2s; }
+.garland-flower.f3 { transform: translateY(-4px) rotate(0deg); width: 56px; height: 56px; animation-delay: 0.4s; }
+.garland-flower.f4 { transform: translateY(3px) rotate(4deg); animation-delay: 0.6s; }
+.garland-flower.f5 { transform: translateY(12px) rotate(10deg); animation-delay: 0.8s; }
+
+@keyframes sway-flower {
+  0% { transform: translateY(0) rotate(0deg) scale(0.98); }
+  100% { transform: translateY(-4px) rotate(4deg) scale(1.04); }
+}
+
+/* Festive Banner Group */
+.finale-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.8rem;
+  z-index: 2;
+}
+
+.banner-diya {
+  width: clamp(60px, 6.5vw, 88px);
+  height: clamp(60px, 6.5vw, 88px);
+  filter: drop-shadow(0 6px 22px rgba(255, 179, 0, 0.95)) drop-shadow(0 0 10px rgba(255, 61, 0, 0.7));
+  animation: flicker-banner-diya 2s infinite alternate ease-in-out;
+}
+
+.banner-diya.left {
+  animation-delay: 0.2s;
+}
+
+.banner-diya.right {
+  transform: scaleX(-1);
+  animation: flicker-banner-diya-right 2s infinite alternate ease-in-out;
+  animation-delay: 0.7s;
+}
+
+@keyframes flicker-banner-diya {
+  0% { transform: scale(0.95); filter: drop-shadow(0 4px 16px rgba(255, 179, 0, 0.85)); }
+  100% { transform: scale(1.05); filter: drop-shadow(0 10px 28px rgba(255, 111, 0, 1)); }
+}
+
+@keyframes flicker-banner-diya-right {
+  0% { transform: scaleX(-1) scale(0.95); filter: drop-shadow(0 4px 16px rgba(255, 179, 0, 0.85)); }
+  100% { transform: scaleX(-1) scale(1.05); filter: drop-shadow(0 10px 28px rgba(255, 111, 0, 1)); }
+}
+
+.finale-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.finale-pretitle {
+  font-family: var(--font-festive);
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #ffe082;
+  text-shadow: 0 0 16px rgba(255, 179, 0, 0.85);
+  margin-bottom: 0.2rem;
+}
+
+.finale-heading {
+  font-family: var(--font-festive);
+  font-size: clamp(2.8rem, 7.5vw, 6.2rem);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1.05;
+  background: linear-gradient(180deg, #ffffff 0%, #fff3b0 22%, #ffd700 50%, #ff8f00 80%, #d84315 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.95))
+         drop-shadow(0 0 50px rgba(255, 111, 0, 0.8))
+         drop-shadow(0 0 90px rgba(194, 24, 91, 0.6));
+  animation: shimmer-text 2.8s infinite alternate ease-in-out;
+  white-space: nowrap;
+}
+
+@keyframes shimmer-text {
+  0% { filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.85)) drop-shadow(0 0 45px rgba(255, 111, 0, 0.7)); }
+  100% { filter: drop-shadow(0 0 32px rgba(255, 245, 157, 1)) drop-shadow(0 0 75px rgba(211, 47, 47, 0.9)); }
+}
+
+.finale-subheading {
+  font-family: var(--font-ui);
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fff9e6;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 179, 0, 0.7);
+  margin-top: 0.5rem;
+}

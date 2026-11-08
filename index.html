@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#090a11" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Gaha" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/images/diwali-mark.svg" />
+    <meta name="description" content="Gaha Diwali Studio, by Gaurav. Celebrate with ten interactive fireworks, hand gestures, festive postcards, and video reels." />
+    <meta name="author" content="Gaurav · Gaha" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gaha" />
+    <meta property="og:title" content="Gaha Diwali Studio — by Gaurav" />
+    <meta property="og:description" content="A little light. A lot of wonder. Interactive Diwali fireworks by Gaurav for Gaha." />
+    <meta property="og:url" content="https://diwali-studio-gaha.vercel.app/" />
+    <meta name="twitter:card" content="summary" />
+    <title>Gaha Diwali Studio — by Gaurav</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="app">
+      <video id="webcam" playsinline muted autoplay></video>
+      <canvas id="stage" aria-label="Interactive fireworks sky. Choose a cracker below, then tap the sky or press Space to ignite it."></canvas>
+      <!-- Grand Finale Centerpiece: Shows "HAPPY DIWALI" in center after Grand Finale -->
+      <div id="grand-finale-center" class="grand-finale-center hidden">
+        <div class="finale-sparkle-aura"></div>
+        <div class="finale-mandala-ring"></div>
+        
+        <!-- Marigold Garland Arch -->
+        <div class="marigold-garland">
+          <img src="/images/marigold.svg" class="garland-flower f1" alt="Marigold" />
+          <img src="/images/marigold.svg" class="garland-flower f2" alt="Marigold" />
+          <img src="/images/marigold.svg" class="garland-flower f3" alt="Marigold" />
+          <img src="/images/marigold.svg" class="garland-flower f4" alt="Marigold" />
+          <img src="/images/marigold.svg" class="garland-flower f5" alt="Marigold" />
+        </div>
+
+        <div class="finale-banner">
+          <img src="/images/diya.svg" class="banner-diya left" alt="Diwali Diya" />
+          <div class="finale-text-group">
+            <span class="finale-pretitle">✦ SHUBH DEEPAVALI ✦</span>
+            <h1 class="finale-heading">HAPPY DIWALI</h1>
+            <p class="finale-subheading">May your world blaze with light, joy & prosperity</p>
+          </div>
+          <img src="/images/diya.svg" class="banner-diya right" alt="Diwali Diya" />
+        </div>
+      </div>
+
+
+      <div id="hud" class="hud-container">
+        <header class="hud-header">
+          <a class="brand" href="/" aria-label="Gaha Diwali Studio by Gaurav — home">
+            <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 4c-6 8-7 12 0 16 7-4 6-8 0-16Z" fill="currentColor"/><path d="M6 24c2 8 7 12 14 12s12-4 14-12H6Z" stroke="currentColor" stroke-width="1.7"/></svg>
+            <span><span class="brand-name">Gaha</span><span class="brand-creator"> · by Gaurav</span></span>
+          </a>
+          <div class="header-actions">
+            <button id="btn-camera" class="action-btn camera-btn" title="Use hand gestures" aria-label="Enable camera" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="5" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="m12 8 5-3v10l-5-3" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="camera-label">Camera</span></button>
+            <button id="btn-audio" class="action-btn audio-btn sound-locked" title="Your first tap enables sound" aria-label="Enable sound" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8h3l4-4v12l-4-4H3V8Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path class="sound-waves" d="M13 7a5 5 0 0 1 0 6m2-8a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path class="sound-slash" d="m13 8 4 4m0-4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span id="sound-label" class="sound-label">Tap sound</span></button>
+            <button id="btn-snap" class="action-btn icon-action" title="Save postcard (S)" aria-label="Save postcard"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 6h3l1.5-2h5L14 6h3v10H3V6Z" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="11" r="3" stroke="currentColor" stroke-width="1.4"/></svg></button>
+            <button id="btn-record" class="action-btn btn-record" title="Record reel (R)" aria-pressed="false"><span class="record-dot" aria-hidden="true"></span><span id="record-label" class="sr-only">Record</span><span id="record-timer" class="record-timer" aria-hidden="true">00:00</span></button>
+            <button id="btn-guide" class="action-btn icon-action" title="Gestures & shortcuts" aria-label="Open gesture guide"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.5a2 2 0 0 1 4 .5c0 1.5-2 1.5-2 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="10" cy="13.6" r=".7" fill="currentColor"/></svg></button>
+            <button id="btn-fullscreen" class="action-btn icon-action" title="Fullscreen & landscape (F)" aria-label="Enter fullscreen" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </header>
+
+        <p class="sr-only" id="camera-status" role="status">Camera off</p>
+        <p class="sr-only" id="camera-note">Enable the camera for hand gestures, or choose a cracker below.</p>
+        <div class="toast" id="toast" role="status" hidden></div>
+        <p class="rotate-hint" aria-hidden="true">↻ Turn sideways for a wider sky</p>
+
+        <section class="cracker-library" aria-label="Firecracker collection">
+          <div class="dock-caption" aria-live="polite"><span id="active-effect">Ganga Jamuna</span><span class="caption-divider" aria-hidden="true">·</span><span id="stage-hint">Tap to ignite</span></div>
+          <div class="cracker-grid" id="cracker-grid" role="group" aria-label="Choose and ignite a cracker"></div>
+        </section>
+        <footer class="creator-credit" aria-label="Creator links">
+          <span>Gaha · by Gaurav</span><span aria-hidden="true">·</span>
+          <a href="https://www.instagram.com/gauravvx14/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <span aria-hidden="true">/</span>
+          <a href="https://github.com/Gaurav1-4" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </footer>
+      </div>
+      <aside id="camera-panel" class="camera-panel" aria-labelledby="camera-panel-title" role="status">
+        <button id="btn-dismiss-camera-panel" class="camera-panel-dismiss" aria-label="Dismiss camera status">&times;</button>
+        <h2 id="camera-panel-title">Camera is off</h2>
+        <p id="camera-panel-message">Enable it for hand gestures, or tap a cracker below. Your first tap enables sound.</p>
+        <button id="btn-camera-panel" class="camera-panel-action">Enable camera</button>
+      </aside>
+      <button id="btn-restore-hud" class="restore-hud-btn hidden" title="Show controls (H)" aria-label="Show controls"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 10s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5Z" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="10" r="2" stroke="currentColor" stroke-width="1.4"/></svg></button>
+
+      <dialog id="gesture-dialog" class="gesture-dialog" aria-labelledby="gesture-guide-title">
+        <div class="guide-header"><div><h2 id="gesture-guide-title">A little guidance.</h2><p>Every sign uses one hand except the finale, which uses both open palms. Tap different spots to add more crackers, or change signs to layer effects. Fountains, sparklers and launchers follow their held signs. All ten crackers are visible on phones. Either hand works.</p></div><button id="btn-close-guide" class="action-btn" aria-label="Close gesture guide">&times;</button></div>
+        <p id="tracking-health" class="tracking-health" role="status">Enable the camera to use hand gestures.</p>
+        <div id="gesture-guide" class="gesture-guide"></div>
+        <p class="guide-tip">Point up for Rocket, make a V for Roman candle, a fist for Anar, and pinch thumb to index for Phooljhadi. An L makes Starburst; both open palms start the finale. Hold one open palm to create more Chakris, or three fingers to stack Sutli bombs. Thumbs up fires Bullet. Ganga Jamuna uses index and little finger.</p>
+        <div class="guide-shortcuts"><span><kbd>Space</kbd> Replay</span><span><kbd>M</kbd> Sound</span><span><kbd>S</kbd> Postcard</span><span><kbd>R</kbd> Record</span></div>
+        <div class="guide-capture"><button id="btn-guide-snap" class="camera-panel-action">Save postcard</button><button id="btn-guide-record" class="camera-panel-action">Record / stop reel</button></div>
+        <div class="guide-footer"><span>Camera video stays in your browser.</span><button id="btn-hide-hud" class="text-button">Hide controls <kbd>H</kbd></button><span>Gaha · by Gaurav · <a href="https://www.instagram.com/gauravvx14/" target="_blank" rel="noopener noreferrer">Instagram</a> / <a href="https://github.com/Gaurav1-4" target="_blank" rel="noopener noreferrer">GitHub</a></span></div>
+      </dialog>
+
+      <dialog id="fullscreen-help" class="gesture-dialog" aria-labelledby="fullscreen-help-title">
+        <div class="guide-header"><div><h2 id="fullscreen-help-title">More sky. Less browser.</h2><p>This browser doesn’t support fullscreen for the studio. The camera still fills the page edge to edge.</p></div><button id="btn-close-fullscreen-help" class="action-btn" aria-label="Close fullscreen help">&times;</button></div>
+        <p class="fullscreen-instructions">On iPhone, use <strong>Share → Add to Home Screen</strong>, enable <strong>Open as Web App</strong> if shown, then open Gaha from your Home Screen to remove the browser bars.</p>
+        <p class="guide-tip">Turn your phone sideways for the widest view. If it stays upright, turn off your phone’s rotation lock.</p>
+      </dialog>
+
+      <!-- Video recording preview -->
+      <aside id="reel-preview-card" class="reel-preview hidden" aria-label="Gaha Diwali reel by Gaurav">
+        <button type="button" id="reel-preview-thumb-btn" class="reel-thumb-btn" aria-label="Open full reel preview">
+          <video id="reel-preview-video" playsinline loop muted autoplay></video>
+          <div class="reel-play-overlay"><span>🔍</span></div>
+        </button>
+        <div class="reel-card-meta">
+          <span id="reel-duration" class="reel-duration">00:00</span>
+        </div>
+        <div class="reel-actions">
+          <button type="button" id="reel-view-btn" class="hud-btn hud-btn-label" aria-label="View reel">View</button>
+          <button type="button" id="reel-save-btn" class="hud-btn hud-btn-label btn-save" aria-label="Download video">Download</button>
+          <button type="button" id="reel-dismiss-btn" class="hud-btn hud-btn-label btn-dismiss" aria-label="Dismiss">Dismiss</button>
+        </div>
+      </aside>
+
+      <!-- Full video dialog -->
+      <dialog id="reel-dialog" class="reel-dialog" aria-label="Gaha Diwali reel player by Gaurav">
+        <div class="reel-dialog-card">
+          <div class="reel-dialog-header">
+            <div class="reel-dialog-title">
+              <img src="/images/marigold.svg" class="dialog-marigold" alt="" />
+              <span>Gaha · by Gaurav</span>
+            </div>
+            <button type="button" id="reel-dialog-close-btn" class="reel-dialog-close" aria-label="Close dialog">&times;</button>
+          </div>
+          <div class="reel-dialog-video-wrapper">
+            <video id="reel-dialog-video" controls playsinline loop></video>
+          </div>
+          <div class="reel-dialog-footer">
+            <button type="button" id="reel-dialog-save-btn" class="hud-btn hud-btn-download">Download</button>
+          </div>
+        </div>
+      </dialog>
+
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "id": "/",
+  "name": "Gaha Diwali Studio — by Gaurav",
+  "short_name": "Gaha",
+  "description": "Interactive Diwali fireworks by Gaurav for Gaha.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#090a11",
+  "theme_color": "#090a11",
+  "icons": [{ "src": "/images/diwali-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

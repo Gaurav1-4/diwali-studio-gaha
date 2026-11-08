@@ -1,0 +1,179 @@
+@import './finale.css';
+
+:root {
+  color-scheme: dark;
+  --bg-dark: #090a11;
+  --text-main: #f2eee6;
+  --text-muted: #938f9c;
+  --gold-primary: #edc892;
+  --gold-amber: #edc892;
+  --glass-border: #ffffff18;
+  --glass-border-bright: #edc89266;
+  --gold-glow: #edc89233;
+  --amber-glow: #edc89222;
+  --font-ui: 'DM Sans', sans-serif;
+  --font-festive: 'Instrument Serif', Georgia, serif;
+  --font-mono: ui-monospace, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg-dark); color: var(--text-main); font-family: var(--font-ui); }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:disabled { opacity: .5; cursor: wait; }
+button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid var(--gold-primary); outline-offset: 3px; }
+button svg { width: 18px; height: 18px; flex-shrink: 0; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+#app { position: relative; width: 100%; height: 100dvh; overflow: hidden; }
+#webcam { position: absolute; top: 0; left: 0; width: 1px; height: 1px; opacity: .01; pointer-events: none; }
+#stage { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; touch-action: manipulation; cursor: crosshair; }
+.hud-container { position: absolute; inset: 0; z-index: 10; pointer-events: none; transition: opacity .2s; }
+.hud-container.hud-hidden { opacity: 0; visibility: hidden; }
+.hud-header { position: absolute; inset: 22px 28px auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: inline-flex; align-items: center; gap: 8px; color: #eee9df; font-size: 17px; font-weight: 500; letter-spacing: -.6px; text-decoration: none; text-shadow: 0 1px 8px #0006; pointer-events: auto; }
+.brand-creator { color: #b5b0bc; font-weight: 400; }
+.brand-name { color: var(--gold-primary); font-weight: 600; }
+.brand > span { white-space: nowrap; }
+.brand-mark { width: 21px; height: 26px; color: var(--gold-primary); }
+.header-actions { display: flex; gap: 4px; align-items: center; pointer-events: auto; }
+.action-btn { width: 36px; height: 36px; padding: 0; border: 1px solid transparent; border-radius: 9px; background: #10121aa3; color: #d6d2da; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: background .15s, color .15s; }
+.action-btn:hover { background: #252630ed; color: #fff; }
+.camera-btn { width: auto; padding: 0 12px; margin-right: 5px; font-size: 11px; }
+.camera-btn.camera-on { color: #a8d5b9; }
+.sound-slash, .is-muted .sound-waves { display: none; }
+.is-muted .sound-slash { display: block; }
+.record-dot { width: 11px; height: 11px; border: 1.3px solid #df9b91; border-radius: 50%; background: #df9b91; box-shadow: inset 0 0 0 2px #10121a; }
+.recording { width: auto; min-width: 36px; padding: 0 11px; border-color: #df9b9133; }
+.recording .record-dot { animation: record-pulse 1s infinite; border-radius: 2px; width: 9px; height: 9px; box-shadow: none; }
+.record-timer { display: none; font-size: 10px; font-variant-numeric: tabular-nums; }
+.recording .record-timer { display: inline; }
+.cracker-library { position: absolute; left: 50%; bottom: max(44px, calc(env(safe-area-inset-bottom) + 28px)); transform: translateX(-50%); max-width: calc(100% - 32px); width: max-content; pointer-events: auto; }
+.dock-caption { display: flex; align-items: center; justify-content: center; gap: 7px; margin-bottom: 7px; color: #a7a2ae; font-size: 10px; line-height: 16px; text-shadow: 0 1px 8px #000; }
+#active-effect { color: #e3dbcd; font-weight: 500; }
+.caption-divider { color: #706979; }
+#stage-hint { color: #a7a2ae; }
+.cracker-grid { display: flex; gap: 3px; max-width: 100%; overflow-x: auto; padding: 5px; border: 1px solid #ffffff15; border-radius: 16px; background: #101119eb; box-shadow: 0 6px 24px #0003; scrollbar-width: none; overscroll-behavior-x: contain; }
+.cracker-grid::-webkit-scrollbar { display: none; }
+.cracker-card { position: relative; flex: 0 0 82px; width: 82px; height: 82px; padding: 4px 2px 6px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px; border: 1px solid transparent; border-radius: 10px; background: transparent; transition: border-color .15s, background .15s; }
+.cracker-card:hover { background: #ffffff0a; border-color: #ffffff15; }
+.cracker-card.selected { border-color: #edc89266; background: #edc8920a; }
+.cracker-art { display: grid; place-items: center; width: 46px; height: 34px; pointer-events: none; }
+.cracker-art img { display: block; width: 46px; height: 46px; object-fit: contain; transform: translateY(-4px); }
+.cracker-name { font-size: 10px; line-height: 13px; font-weight: 500; white-space: nowrap; }
+.cracker-gesture { display: flex; align-items: center; justify-content: center; gap: 3px; color: #aaa4af; font-size: 9px; line-height: 14px; white-space: nowrap; }
+.cracker-gesture .hand-sign { width: 15px; height: 18px; flex-shrink: 0; color: #d6c8ac; }
+.hand-sign { width: 25px; height: 29px; }
+.hand-fold { fill: none; stroke: #12131b; stroke-width: 1.1; stroke-linecap: round; }
+.hand-hole { fill: #12131b; }
+.cracker-card.selected .cracker-gesture { color: #d4c4ab; }
+.toast { position: absolute; left: 50%; top: 78px; transform: translateX(-50%); border: 1px solid #edc89230; background: #171720f5; color: #eadac3; padding: 12px 16px; border-radius: 8px; font-size: 11px; line-height: 1.5; width: max-content; max-width: calc(100vw - 40px); pointer-events: auto; text-align: center; }
+.restore-hud-btn { position: absolute; z-index: 20; top: 22px; right: 28px; width: 36px; height: 36px; border: 1px solid #ffffff18; border-radius: 9px; background: #10121aa3; display: grid; place-items: center; }
+.restore-hud-btn.hidden { display: none; }
+.grand-finale-center { width: min(75vw, 700px); }
+.finale-heading { font-family: var(--font-festive); }
+.finale-text-group { visibility: hidden; }
+kbd { font: 9px/1 var(--font-mono); border: 1px solid #ffffff20; padding: 4px 5px; border-radius: 4px; color: #b4aebc; background: #ffffff03; white-space: nowrap; }
+.gesture-dialog { margin: auto; width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); border: 1px solid #ffffff20; border-radius: 16px; background: #12131b; color: var(--text-main); padding: 24px; }
+.gesture-dialog::backdrop, .reel-dialog::backdrop { background: #03040bd9; }
+.guide-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.guide-header h2 { font-family: var(--font-festive); font-weight: 400; font-size: 32px; }
+.guide-header p { color: #9992a3; font-size: 11px; line-height: 1.6; margin-top: 7px; }
+.guide-header .action-btn { flex-shrink: 0; font-size: 24px; background: transparent; }
+.guide-row { display: grid; grid-template-columns: 40px 1fr 1fr 22px; align-items: center; gap: 9px; min-height: 39px; border-bottom: 1px solid #ffffff08; font-size: 11px; }
+.guide-sign { display: grid; place-items: center; color: #d6c8ac; }
+.guide-name { color: #e2dbd1; }
+.guide-gesture { color: #938c9e; font-size: 10px; text-align: right; }
+.guide-row kbd { text-align: center; }
+.guide-shortcuts { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; font-size: 10px; color: #aaa3b2; }
+.guide-shortcuts span { display: inline-flex; align-items: center; gap: 6px; }
+.guide-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 22px; padding-top: 16px; border-top: 1px solid #ffffff10; font-size: 9px; color: #77717f; }
+.text-button { display: inline-flex; align-items: center; gap: 7px; border: 0; background: transparent; color: #b1a7ba; font-size: 10px; }
+.reel-preview { position: absolute; z-index: 40; top: 74px; right: 28px; width: 220px; background: #171720f5; border: 1px solid #ffffff22; border-radius: 12px; padding: 10px; box-shadow: 0 12px 40px #0008; }
+.reel-preview.hidden { display: none; }
+.reel-thumb-btn { display: block; position: relative; width: 100%; border: 0; aspect-ratio: 16/9; border-radius: 7px; overflow: hidden; background: black; }
+.reel-thumb-btn video { width: 100%; height: 100%; object-fit: contain; }
+.reel-play-overlay { position: absolute; inset: 0; display: grid; place-items: center; background: #0003; opacity: 0; }
+.reel-thumb-btn:hover .reel-play-overlay { opacity: 1; }
+.reel-card-meta { text-align: right; font-size: 10px; color: #aaa2b2; margin: 8px 0; }
+.reel-actions { display: flex; gap: 6px; }
+.hud-btn { border: 1px solid #ffffff20; border-radius: 5px; background: #ffffff08; padding: 8px 10px; font-size: 10px; flex: 1; }
+.hud-btn:hover { background: #ffffff16; }
+.btn-save, .hud-btn-download { background: var(--gold-primary); color: #231d19; }
+.reel-dialog { margin: auto; width: min(740px, calc(100vw - 32px)); max-height: 90dvh; border: 1px solid #ffffff22; border-radius: 14px; background: #14151e; color: var(--text-main); padding: 20px; }
+.reel-dialog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.reel-dialog-title { display: flex; gap: 10px; align-items: center; font-family: var(--font-festive); font-size: 28px; }
+.dialog-marigold { width: 25px; height: 25px; }
+.reel-dialog-close { border: 0; background: transparent; font-size: 28px; padding: 4px 8px; }
+.reel-dialog-video-wrapper video { display: block; max-height: 65dvh; width: 100%; background: black; }
+.reel-dialog-footer { margin-top: 15px; display: flex; }
+@keyframes record-pulse { 50% { opacity: .25; } }
+.camera-panel { position: absolute; z-index: 12; left: 50%; top: 50%; transform: translate(-50%,-50%); width: min(300px,calc(100% - 48px)); padding: 22px; border: 1px solid #ffffff13; border-radius: 12px; background: #11121be8; text-align: center; }
+.camera-panel h2 { font-size: 15px; font-weight: 500; color: #e7dfd1; }
+.camera-panel p { font-size: 11px; color: #9993a2; line-height: 1.7; margin-top: 9px; }
+.camera-panel-dismiss { position: absolute; top: 4px; right: 6px; width: 28px; height: 28px; border: 0; background: transparent; color: #847c90; font-size: 20px; }
+.camera-panel-action { margin-top: 16px; padding: 9px 13px; border: 1px solid #edc89240; border-radius: 7px; background: #edc89210; color: #e6c494; font-size: 11px; }
+.camera-panel-action:hover { background: #edc8921c; }
+.hud-hidden ~ .camera-panel { display: none; }
+
+.guide-tip { margin-top: 15px; color: #aaa3b2; font-size: 10px; line-height: 1.7; }
+
+.creator-credit { position: absolute; left: 28px; bottom: max(10px, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 7px; color: #a29b9f; font-size: 10px; line-height: 24px; pointer-events: auto; text-shadow: 0 1px 8px #000; }
+.creator-credit a { color: #c2b7a4; text-decoration: none; }
+.creator-credit a:hover { color: var(--gold-primary); }
+
+.audio-btn { width: auto; padding: 0 10px; flex: 0 0 auto; }
+.sound-label { font-size: 10px; }
+.sound-locked .sound-waves { opacity: .4; }
+.cracker-card[data-cracker="GRAND_FINALE"] .hand-sign { width: 24px; }
+.rotate-hint { display: none; }
+.guide-capture { display: flex; gap: 8px; }
+.tracking-health { color: #a8d5b9; font-size: 11px; line-height: 1.5; margin-bottom: 12px; }
+.guide-footer a { color: var(--gold-primary); }
+.fullscreen-instructions { color: #c2b9c8; font-size: 13px; line-height: 1.8; }
+#app, html:fullscreen, html:-webkit-full-screen { background: var(--bg-dark); }
+
+/* Controls float over an edge-to-edge camera; they never reserve camera space. */
+@media (max-width: 800px), (max-width: 1100px) and (max-height: 600px) {
+  .hud-header { inset: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) auto max(8px, env(safe-area-inset-left)); flex-wrap: nowrap; gap: 6px; }
+  .brand { font-size: 13px; gap: 4px; letter-spacing: -.5px; }
+  .brand-mark { width: 15px; height: 20px; }
+  .header-actions { width: auto; margin-left: auto; gap: 2px; flex-shrink: 0; }
+  .action-btn, .camera-btn, .audio-btn { width: 40px; height: 40px; flex: 0 0 40px; padding: 0; margin: 0; border-radius: 50%; background: #10121a80; }
+  .camera-label, .sound-label, #btn-snap, #btn-record { display: none; }
+  #btn-record.recording { display: inline-flex; width: auto; min-width: 40px; flex-basis: auto; padding: 0 8px; }
+  .cracker-library { left: max(8px, env(safe-area-inset-left)); right: max(8px, env(safe-area-inset-right)); width: auto; max-width: none; transform: none; bottom: max(8px, env(safe-area-inset-bottom)); }
+  .cracker-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 3px; overflow: visible; border-radius: 14px; background: #101119b8; box-shadow: none; }
+  .cracker-card { width: 100%; min-width: 0; height: 58px; padding: 2px 1px; gap: 0; border-radius: 8px; justify-content: center; }
+  .cracker-art { width: 32px; height: 23px; }
+  .cracker-art img { width: 30px; height: 30px; transform: translateY(-3px); }
+  .cracker-name { font-size: 8px; line-height: 10px; min-height: 10px; white-space: normal; text-align: center; }
+  .cracker-gesture { gap: 2px; font-size: 7px; line-height: 13px; }
+  .cracker-gesture .hand-sign { width: 10px; height: 13px; }
+  .cracker-card[data-cracker="GRAND_FINALE"] .hand-sign { width: 17px; }
+  .dock-caption { font-size: 9px; line-height: 14px; margin-bottom: 4px; gap: 5px; }
+  .creator-credit { display: none; }
+  .rotate-hint { display: block; position: absolute; top: calc(max(8px, env(safe-area-inset-top)) + 48px); left: 50%; transform: translateX(-50%); width: max-content; color: #e3dbcc; font-size: 10px; text-shadow: 0 1px 6px #000; }
+  .toast { top: calc(max(8px, env(safe-area-inset-top)) + 52px); }
+  .restore-hud-btn { top: max(8px, env(safe-area-inset-top)); right: max(8px, env(safe-area-inset-right)); width: 40px; height: 40px; border-radius: 50%; }
+  .reel-preview { top: 60px; right: max(8px, env(safe-area-inset-right)); width: 190px; }
+  .grand-finale-center { width: 95vw; }
+  .finale-heading { font-size: 42px; }
+  .banner-diya { width: 40px; }
+  .gesture-dialog { padding: 18px; max-height: calc(100dvh - 20px); }
+}
+@media (max-width: 360px) {
+  .brand { font-size: 11px; gap: 3px; }
+  .brand-mark { width: 13px; }
+  .action-btn, .camera-btn, .audio-btn { width: 36px; height: 40px; flex-basis: 36px; }
+  .cracker-name { font-size: 7.5px; }
+  .cracker-gesture { font-size: 6.5px; gap: 1px; }
+}
+@media (max-width: 1100px) and (max-height: 600px) and (orientation: landscape) {
+  .rotate-hint { display: none; }
+  .cracker-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+  .cracker-card { height: 54px; }
+  .cracker-name { font-size: 8px; }
+  .camera-panel { padding: 14px; }
+  .dock-caption { margin-bottom: 3px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *:before, *:after { animation: none !important; transition: none !important; } }
