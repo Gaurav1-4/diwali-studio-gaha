@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Gaha Diwali Studio by Gaurav \u2014 interactive fireworks, hand gestures, postcards and video reels.",
+  "description": "Diwali Studio x Gaha by Gaurav — interactive fireworks, hand gestures, postcards and video reels.",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
