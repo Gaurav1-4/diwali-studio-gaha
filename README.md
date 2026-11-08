@@ -2,6 +2,10 @@
 
 [Open the live studio](https://diwali-studio-gaha.vercel.app/) · [Source on GitHub](https://github.com/Gaurav1-4/diwali-studio-gaha)
 
+<p align="center">
+  <img src="public/images/demo.gif" alt="Gaha Diwali Studio in action" width="100%" />
+</p>
+
 **Gaha** is a Diwali fireworks experience customized and maintained by **Gaurav**: ten firecrackers, hand gestures, recorded pyrotechnic sounds, postcards, and video reels.
 
 [Instagram @gauravvx14](https://www.instagram.com/gauravvx14/) · [Gaurav on GitHub](https://github.com/Gaurav1-4) · [Credits and asset provenance](CREDITS.md) · [Software license](LICENSE)
